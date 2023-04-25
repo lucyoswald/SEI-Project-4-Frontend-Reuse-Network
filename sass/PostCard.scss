@@ -1,0 +1,15 @@
+* {
+  margin: 0;
+}
+
+.post_cards {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.post_image {
+  width: 298px;
+  height: 230px;
+}
