@@ -1,5 +1,0 @@
-const Post = () => {
-  return <div>This is the individual post page</div>;
-};
-
-export default Post;

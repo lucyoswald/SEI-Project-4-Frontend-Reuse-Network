@@ -1,3 +1,16 @@
+* {
+  box-sizing: border-box;
+}
+
+.posts_background {
+  background-color: rgba(234, 234, 234, 0.896);
+  background-position: cover;
+  // z-index: -1;
+  position: absolute;
+  // object-fit: cover;
+  // width: 100vw;
+  // height: 100vh;
+}
 .form-control {
   font-size: 14px;
   padding: 8px;
@@ -9,4 +22,12 @@
 
 .custom-btn-color {
   background-color: #a8c090;
+}
+.postcard_main {
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
+  flex-wrap: wrap;
+  margin: 90px;
+  margin-top: 25px;
 }

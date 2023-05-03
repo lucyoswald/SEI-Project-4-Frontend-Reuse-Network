@@ -2,14 +2,24 @@
   margin: 0;
 }
 
-.post_cards {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-}
-
 .post_image {
   width: 298px;
   height: 230px;
+}
+.update_button {
+  background-color: #0071c2;
+  border: #0071c2;
+  width: 90px;
+  height: 30px;
+  padding: 5px 7px 7px 5px;
+  border-radius: 5px;
+  font-size: 12px;
+}
+button:hover {
+  background-color: #00487a;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
 }

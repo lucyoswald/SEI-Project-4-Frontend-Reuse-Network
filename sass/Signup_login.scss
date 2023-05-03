@@ -50,3 +50,43 @@
     margin: 5px;
   }
 }
+
+.error {
+  font-size: 11px;
+  width: 20vw;
+  margin: auto;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.close_button {
+  background-color: transparent;
+  border: none;
+  color: #842029;
+  margin-right: -40px;
+  margin-top: -30px;
+  font-size: 12px;
+}
+
+.close:hover,
+.close:focus {
+  background-color: transparent;
+  outline: none;
+  box-shadow: none;
+}
+.signup_background_video {
+  z-index: -1;
+  position: absolute;
+  object-fit: cover;
+  width: 100vw;
+  height: 100vh;
+}
+.signup_background_image {
+  z-index: -1;
+  position: absolute;
+  object-fit: cover;
+  width: 100vw;
+  height: 100vh;
+}
