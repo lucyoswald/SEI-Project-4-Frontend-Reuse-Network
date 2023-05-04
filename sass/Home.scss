@@ -21,20 +21,6 @@
   z-index: 1;
   gap: 5px;
 
-  //   & button {
-  //     background-color: #0071c2;
-  //     border: #0071c2;
-  //     width: 90px;
-  //     height: 30px;
-  //     padding: 5px 7px 7px 5px;
-  //     border-radius: 5px;
-  //     font-size: 12px;
-  //   }
-  //   button:hover {
-  //     background-color: #00487a;
-  //   }
-  // }
-
   & button {
     background-color: #a8c090;
     border: #a8c090;
@@ -73,12 +59,3 @@
   width: 100vw;
   height: 200vh;
 }
-
-// .grey_background {
-//   background-color: rgba(206, 204, 204, 0.896);
-//   z-index: -1;
-//   position: absolute;
-//   object-fit: cover;
-//   width: 100vw;
-//   height: 100vh;
-// }

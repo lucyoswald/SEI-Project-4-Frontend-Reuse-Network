@@ -5,7 +5,7 @@
 .posts_background {
   background-color: rgba(234, 234, 234, 0.896);
   background-position: cover;
-  // z-index: -1;
+  z-index: -1;
   position: absolute;
   // object-fit: cover;
   // width: 100vw;
@@ -28,6 +28,6 @@
   flex-direction: row;
   gap: 30px;
   flex-wrap: wrap;
-  margin: 90px;
+  margin: 120px;
   margin-top: 25px;
 }

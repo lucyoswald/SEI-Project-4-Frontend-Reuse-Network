@@ -4,7 +4,6 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
-import signup_background_video from "../assets/pexels-charlotte-may-5824187-2160x3840-24fps.mp4";
 import login_background_image from "../assets/pexels-francesco-ungaro-4322027.jpg";
 
 const Login = () => {

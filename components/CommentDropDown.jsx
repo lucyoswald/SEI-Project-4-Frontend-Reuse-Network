@@ -2,11 +2,8 @@ import React, { useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import ListGroup from "react-bootstrap/ListGroup";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { API_URL } from "../consts";
 import axios from "axios";
-import { useJwt } from "react-jwt";
 
 const CommentModal = ({ comments }) => {
   const [showModal, setShowModal] = useState(false);
@@ -18,25 +15,6 @@ const CommentModal = ({ comments }) => {
   const handleButtonClick = () => {
     setShowModal(true);
   };
-
-  // const post = post.id;
-  // const auth_token = localStorage.getItem("token");
-  // const decodedToken = useJwt(auth_token);
-  // const userId = decodedToken?.decodedToken?.sub;
-
-  // const handleShowDeleteComment = (value) => {
-  //   console.log(userId, post.owner.id);
-
-  //   if (userId === post.owner.id) {
-  //     console.log("this function is running");
-
-  //     deleteComment(value);
-  //   } else {
-  //     window.alert(
-  //       "Apologies you can't delete this comment as you aren't the creator."
-  //     );
-  //   }
-  // };
 
   const deleteComment = async (e) => {
     e.preventDefault();
@@ -106,21 +84,20 @@ const CommentModal = ({ comments }) => {
                   >
                     {" "}
                     ❌
-                    {/* <FontAwesomeIcon
-                    icon={faTimes}
-                    style={{
-                      color: "red",
-                      zIndex: 1,
-                      height: "20px",
-                      padding: "10px",
-                      display: "flex",
-                      cursor: "pointer",
-                    }}
-                  /> */}
                   </button>
 
                   <p>{comment.owner.username}</p>
                   <p>{comment.text}</p>
+                  <p style={{ color: "blue" }}>
+                    Posted:{" "}
+                    {new Date(comment.created_at).toLocaleString("en-GB", {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                      day: "2-digit",
+                      month: "short",
+                      year: "numeric",
+                    })}
+                  </p>
                 </ListGroup.Item>
               ))}
           </ListGroup>

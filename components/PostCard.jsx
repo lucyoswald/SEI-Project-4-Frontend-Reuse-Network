@@ -13,6 +13,7 @@ import { API_URL } from "../consts";
 import CommentDropdown from "./CommentDropDown";
 import { useJwt } from "react-jwt";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const PostCard = ({ post }) => {
   const [showPostModal, setShowPostModal] = useState(false);
@@ -20,6 +21,13 @@ const PostCard = ({ post }) => {
   const [comments, setComments] = useState(post.comments);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [theStatus, setTheStatus] = useState("Available");
+  const [showAlertModal, setShowAlertModal] = useState(false);
+  const [showDeleteAlertModal, setShowDeleteAlertModal] = useState(false);
+  const [CommentAlertModal, setCommentAlertModal] = useState(false);
+  const [loginUpdateAlertModal, setLoginUpdateAlertModal] = useState(false);
+  const [loginDeleteAlertModal, setLoginDeleteAlertModal] = useState(false);
+
+  const navigate = useNavigate();
 
   const commentData = {
     text: "",
@@ -27,19 +35,29 @@ const PostCard = ({ post }) => {
   };
 
   const [commentFormData, setCommentFormData] = useState(commentData);
-  const initialformData = {
-    image: "",
-    item: "",
-    description: "",
-    contact: "",
-    location: "",
+
+  const [patchFormData, setPatchFormData] = useState({
+    image: post.image,
+    item: post.item,
+    description: post.description,
+    contact: post.contact,
+    location: post.location,
     owner: post.owner.id,
-    status: "",
+    status: post.status,
+  });
+
+  const onCommentClick = () => {
+    if (!userId) {
+      setCommentAlertModal(true);
+      return;
+    }
+    setShowCommentModal(true);
   };
 
   const onCommentSubmit = async (e) => {
     e.preventDefault();
     console.log("its working");
+
     try {
       const token = localStorage.getItem("token");
       const createComment = await axios.post(
@@ -67,8 +85,6 @@ const PostCard = ({ post }) => {
     console.log(commentFormData);
   };
 
-  const [patchFormData, setPatchFormData] = useState(initialformData);
-
   const onSubmit = async (e) => {
     e.preventDefault();
 
@@ -88,7 +104,7 @@ const PostCard = ({ post }) => {
       );
       setTheStatus(patchFormData.status);
       setShowPostModal(false);
-      setPatchFormData(initialformData);
+      setPatchFormData();
       location.reload();
     } catch (err) {
       console.log(err);
@@ -123,340 +139,408 @@ const PostCard = ({ post }) => {
   const userId = decodedToken?.decodedToken?.sub;
 
   const handleUpdateModal = (value) => {
-    console.log(userId, post.owner.id);
-
-    if (userId === post.owner.id) {
-      console.log("this function is running");
-
+    if (!userId) {
+      // Show not logged in update modal
+      setLoginUpdateAlertModal(true);
+    } else if (userId === post.owner.id) {
+      // Show update modal
       setShowPostModal(value);
     } else {
-      // setShowAlertModal(true);
-      window.alert(
-        "Apologies you can't update this post as you aren't the creator."
-      );
+      // Show alert modal for not owner
+      setShowAlertModal(true);
     }
   };
+
   const handleShowDeleteModal = (value) => {
-    console.log(userId, post.owner.id);
-
-    if (userId === post.owner.id) {
-      console.log("this function is running");
-
+    if (!userId) {
+      // Show not logged in delete modal
+      setLoginDeleteAlertModal(true);
+    } else if (userId === post.owner.id) {
+      // Show delete modal
       setShowDeleteModal(value);
     } else {
-      // setShowAlertModal(true)
-      window.alert(
-        "Apologies you can't delete this post as you aren't the creator."
-      );
+      // Show alert modal for not owner
+      setShowDeleteAlertModal(true);
     }
   };
   useEffect(() => {
     setTheStatus(post.status);
   }, [post.status]);
 
-  {
-    /* <div>
-<Modal show={showAlertModal} onHide={() => setShowAlertModal(false)}>
-      <Modal.Header closeButton>
-        <Modal.Title>Cannot Update Post</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        Apologies you can't update this post as you aren't the creator.
-      </Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={() => setShowAlertModal(false)}>
-          Close
-        </Button>
-      </Modal.Footer>
-
-    </Modal>
-</div> */
-  }
-
   return (
-    <Card
-      className="card"
-      style={{
-        width: "300px",
-        height: "440px",
-        border: "none",
-        backgroundColor: "white",
-      }}
-    >
-      <div
+    <div>
+      <Card
+        className="card"
         style={{
-          position: "absolute",
-          top: 0,
-          right: 0,
-          zIndex: 1,
-          width: "80px",
-          height: "20px",
-          backgroundColor: theStatus === "Available" ? "#A8C090" : "#d8c6a8",
-          borderBottomLeftRadius: "10px",
-          borderTopRightRadius: "5px",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
+          width: "300px",
+          height: "440px",
+          border: "none",
+          backgroundColor: "white",
         }}
       >
-        <button
-          className="available_tab"
+        <div
           style={{
-            fontSize: "9px",
-            color: "white",
-            paddingRight: "5px",
-            paddingLeft: "5px",
-            border: "none",
-            backgroundColor: theStatus === "Available" ? "#A8C090" : "#d8c6a8 ",
+            position: "absolute",
+            top: 0,
+            right: 0,
+            zIndex: 1,
+            width: "80px",
+            height: "20px",
+            backgroundColor: theStatus === "Available" ? "#A8C090" : "#d8c6a8",
             borderBottomLeftRadius: "10px",
-            outline: "none",
+            borderTopRightRadius: "5px",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
           }}
         >
-          {post.status}
-        </button>
-      </div>
-      <FontAwesomeIcon
-        icon={faTimes}
-        onClick={() => handleShowDeleteModal(true)}
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          color: "#ededed",
-          zIndex: 1,
-          height: "20px",
-          padding: "10px",
-          display: "flex",
-          cursor: "pointer",
-        }}
-      />
+          <button
+            className="available_tab"
+            style={{
+              fontSize: "9px",
+              color: "white",
+              paddingRight: "5px",
+              paddingLeft: "5px",
+              border: "none",
+              backgroundColor:
+                theStatus === "Available" ? "#A8C090" : "#d8c6a8 ",
+              borderBottomLeftRadius: "10px",
+              outline: "none",
+            }}
+          >
+            {post.status}
+          </button>
+        </div>
+        <FontAwesomeIcon
+          icon={faTimes}
+          onClick={() => handleShowDeleteModal(true)}
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            color: "#ededed",
+            zIndex: 1,
+            height: "20px",
+            padding: "10px",
+            display: "flex",
+            cursor: "pointer",
+          }}
+        />
+        <Modal
+          show={showDeleteModal}
+          onHide={() => setShowDeleteModal(false)}
+          style={{ marginTop: "25vh" }}
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>Delete Post</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>Are you sure you want to delete this post?</Modal.Body>
+          <Modal.Footer>
+            <Button
+              variant="secondary"
+              onClick={() => setShowDeleteModal(false)}
+            >
+              Cancel
+            </Button>
+            <Button variant="danger" onClick={deletePost}>
+              Delete
+            </Button>
+          </Modal.Footer>
+        </Modal>
+        <Card.Img variant="top" src={post.image} className="post_image" />
+
+        <Card.Body>
+          <Card.Title className="post_item" style={{ fontSize: "15px" }}>
+            {post.item}
+          </Card.Title>
+          <div
+            style={{
+              display: "flex",
+              position: "absolute",
+              bottom: "20px",
+              color: "grey",
+            }}
+          >
+            <OverlayTrigger
+              placement="top"
+              overlay={
+                <Tooltip id="edit-tooltip" style={{ fontSize: "10px" }}>
+                  Leave a comment
+                </Tooltip>
+              }
+            >
+              <FontAwesomeIcon
+                icon={faComment}
+                onClick={onCommentClick}
+                style={{ cursor: "pointer", marginRight: "10px" }}
+              />
+            </OverlayTrigger>
+            <OverlayTrigger
+              placement="top"
+              overlay={
+                <Tooltip id="edit-tooltip" style={{ fontSize: "10px" }}>
+                  Click to edit
+                </Tooltip>
+              }
+            >
+              <FontAwesomeIcon
+                icon={faPenToSquare}
+                onClick={() => handleUpdateModal(true)}
+                style={{ cursor: "pointer" }}
+              />
+            </OverlayTrigger>
+          </div>
+          <Card.Text style={{ fontSize: "13px" }}>{post.description}</Card.Text>
+          <Card.Text style={{ fontSize: "13px" }}>{post.contact}</Card.Text>
+          <Card.Text style={{ fontSize: "13px" }}>{post.location}</Card.Text>
+        </Card.Body>
+
+        {/* COMMENT MODAL  */}
+        <Modal
+          show={showCommentModal}
+          onHide={() => setShowCommentModal(false)}
+          style={{ marginTop: "25vh" }}
+        >
+          <Modal.Header closeButton>
+            <Modal.Title style={{ fontSize: "20px" }}>
+              Leave a comment
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form onSubmit={onCommentSubmit}>
+              <Form.Group controlId="exampleForm.ControlTextarea1">
+                <Form.Label style={{ fontSize: "15px" }}>
+                  Your comment
+                </Form.Label>
+                <Form.Control
+                  as="textarea"
+                  name="text"
+                  value={commentFormData.text}
+                  rows={3}
+                  onChange={onCommentChange}
+                />
+              </Form.Group>
+            </Form>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button
+              variant="secondary"
+              onClick={() => setShowCommentModal(false)}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="primary"
+              onClick={onCommentSubmit}
+              type="submit"
+              style={{ backgroundColor: "#a8c090", border: "none" }}
+            >
+              Comment
+            </Button>
+          </Modal.Footer>
+        </Modal>
+
+        {/* UPDATE CARD MODAL  */}
+
+        <Modal show={showPostModal} onHide={() => setShowPostModal(false)}>
+          <Modal.Header closeButton>
+            <Modal.Title>Update post</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <form onSubmit={onSubmit}>
+              <div className="form-group">
+                <label htmlFor="image" className="form-label">
+                  Image:
+                </label>
+                <input
+                  type="text"
+                  id="image"
+                  name="image"
+                  value={patchFormData.image}
+                  onChange={onChange}
+                  className="form-control form-control-sm"
+                  placeholder="Paste image URL here"
+                  style={{ marginBottom: "10px" }}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="title" className="form-label">
+                  Item name:
+                </label>
+                <input
+                  type="text"
+                  id="item"
+                  name="item"
+                  value={patchFormData.item}
+                  onChange={onChange}
+                  className="form-control form-control-sm"
+                  style={{ marginBottom: "10px" }}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="content" className="form-label">
+                  Description:
+                </label>
+                <textarea
+                  id="content"
+                  name="description"
+                  value={patchFormData.description}
+                  onChange={onChange}
+                  className="form-control"
+                  required
+                ></textarea>
+              </div>
+              <div className="form-group">
+                <label htmlFor="contact" className="form-label">
+                  Contact:
+                </label>
+                <input
+                  type="text"
+                  id="contact"
+                  name="contact"
+                  value={patchFormData.contact}
+                  onChange={onChange}
+                  className="form-control form-control-sm"
+                  style={{ marginBottom: "10px" }}
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="location" className="form-label">
+                  Location:
+                </label>
+                <input
+                  type="text"
+                  id="location"
+                  name="location"
+                  value={patchFormData.location}
+                  onChange={onChange}
+                  className="form-control form-control-sm"
+                  style={{ marginBottom: "10px" }}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="status" className="form-label">
+                  Status:
+                </label>
+                <input
+                  type="text"
+                  id="status"
+                  name="status"
+                  value={patchFormData.status}
+                  onChange={onChange}
+                  className="form-control form-control-sm"
+                  style={{ marginBottom: "10px" }}
+                  required
+                />
+              </div>
+
+              <Button
+                variant="primary"
+                style={{ backgroundColor: "#a8c090", border: "none" }}
+                type="submit"
+              >
+                Update Post
+              </Button>
+            </form>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={() => setShowPostModal(false)}>
+              Cancel
+            </Button>
+          </Modal.Footer>
+        </Modal>
+        <CommentDropdown comments={comments} />
+      </Card>
       <Modal
-        show={showDeleteModal}
-        onHide={() => setShowDeleteModal(false)}
+        show={showAlertModal}
+        onHide={() => setShowAlertModal(false)}
         style={{ marginTop: "25vh" }}
       >
-        <Modal.Header closeButton>
-          <Modal.Title>Delete Post</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>Are you sure you want to delete this post?</Modal.Body>
+        <Modal.Header closeButton></Modal.Header>
+        <Modal.Body>
+          Apologies you can't update this post as you aren't the creator.
+        </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
-            Cancel
-          </Button>
-          <Button variant="danger" onClick={deletePost}>
-            Delete
+          <Button variant="secondary" onClick={() => setShowAlertModal(false)}>
+            Close
           </Button>
         </Modal.Footer>
       </Modal>
-      <Card.Img variant="top" src={post.image} className="post_image" />
-
-      <Card.Body>
-        <Card.Title className="post_item" style={{ fontSize: "15px" }}>
-          {post.item}
-        </Card.Title>
-        <div
-          style={{
-            display: "flex",
-            position: "absolute",
-            bottom: "20px",
-            color: "grey",
-          }}
-        >
-          <OverlayTrigger
-            placement="top"
-            overlay={
-              <Tooltip id="edit-tooltip" style={{ fontSize: "10px" }}>
-                Leave a comment
-              </Tooltip>
-            }
-          >
-            <FontAwesomeIcon
-              icon={faComment}
-              onClick={() => setShowCommentModal(true)}
-              style={{ cursor: "pointer", marginRight: "10px" }}
-            />
-          </OverlayTrigger>
-          <OverlayTrigger
-            placement="top"
-            overlay={
-              <Tooltip id="edit-tooltip" style={{ fontSize: "10px" }}>
-                Click to edit
-              </Tooltip>
-            }
-          >
-            <FontAwesomeIcon
-              icon={faPenToSquare}
-              onClick={() => handleUpdateModal(true)}
-              style={{ cursor: "pointer" }}
-            />
-          </OverlayTrigger>
-        </div>
-        <Card.Text style={{ fontSize: "13px" }}>{post.description}</Card.Text>
-        <Card.Text style={{ fontSize: "13px" }}>{post.contact}</Card.Text>
-        <Card.Text style={{ fontSize: "13px" }}>{post.location}</Card.Text>
-      </Card.Body>
-
-      {/* COMMENT MODAL  */}
       <Modal
-        show={showCommentModal}
-        onHide={() => setShowCommentModal(false)}
+        show={showDeleteAlertModal}
+        onHide={() => setShowDeleteAlertModal(false)}
         style={{ marginTop: "25vh" }}
       >
-        <Modal.Header closeButton>
-          <Modal.Title style={{ fontSize: "20px" }}>
-            Leave a comment
-          </Modal.Title>
-        </Modal.Header>
+        <Modal.Header closeButton></Modal.Header>
         <Modal.Body>
-          <Form onSubmit={onCommentSubmit}>
-            <Form.Group controlId="exampleForm.ControlTextarea1">
-              <Form.Label style={{ fontSize: "15px" }}>Your comment</Form.Label>
-              <Form.Control
-                as="textarea"
-                name="text"
-                value={commentFormData.text}
-                rows={3}
-                onChange={onCommentChange}
-              />
-            </Form.Group>
-          </Form>
+          Apologies you can't delete this post as you aren't the creator.
         </Modal.Body>
         <Modal.Footer>
           <Button
             variant="secondary"
-            onClick={() => setShowCommentModal(false)}
+            onClick={() => setShowDeleteAlertModal(false)}
           >
-            Cancel
+            Close
           </Button>
+        </Modal.Footer>
+      </Modal>
+      <Modal
+        show={CommentAlertModal}
+        onHide={() => setCommentAlertModal(false)}
+        style={{ marginTop: "25vh" }}
+      >
+        <Modal.Header closeButton></Modal.Header>
+        <Modal.Body>You must be logged in to leave a comment.</Modal.Body>
+        <Modal.Footer>
           <Button
             variant="primary"
-            onClick={onCommentSubmit}
-            type="submit"
+            onClick={() => navigate("/login")}
             style={{ backgroundColor: "#a8c090", border: "none" }}
           >
-            Comment
+            Log In
           </Button>
         </Modal.Footer>
       </Modal>
-
-      {/* UPDATE CARD MODAL  */}
-
-      <Modal show={showPostModal} onHide={() => setShowPostModal(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title>Update post</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <form onSubmit={onSubmit}>
-            <div className="form-group">
-              <label htmlFor="image" className="form-label">
-                Image:
-              </label>
-              <input
-                type="text"
-                id="image"
-                name="image"
-                value={patchFormData.image}
-                onChange={onChange}
-                className="form-control form-control-sm"
-                placeholder="Paste image URL here"
-                style={{ marginBottom: "10px" }}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="title" className="form-label">
-                Item name:
-              </label>
-              <input
-                type="text"
-                id="item"
-                name="item"
-                value={patchFormData.item}
-                onChange={onChange}
-                className="form-control form-control-sm"
-                style={{ marginBottom: "10px" }}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="content" className="form-label">
-                Description:
-              </label>
-              <textarea
-                id="content"
-                name="description"
-                value={patchFormData.description}
-                onChange={onChange}
-                className="form-control"
-                required
-              ></textarea>
-            </div>
-            <div className="form-group">
-              <label htmlFor="contact" className="form-label">
-                Contact:
-              </label>
-              <input
-                type="text"
-                id="contact"
-                name="contact"
-                value={patchFormData.contact}
-                onChange={onChange}
-                className="form-control form-control-sm"
-                style={{ marginBottom: "10px" }}
-                required
-              />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="location" className="form-label">
-                Location:
-              </label>
-              <input
-                type="text"
-                id="location"
-                name="location"
-                // defaultValue={patchFormData.location}
-                value={patchFormData.location}
-                onChange={onChange}
-                className="form-control form-control-sm"
-                style={{ marginBottom: "10px" }}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="status" className="form-label">
-                Status:
-              </label>
-              <input
-                type="text"
-                id="status"
-                name="status"
-                // defaultValue={patchFormData.status}
-                value={patchFormData.status}
-                onChange={onChange}
-                className="form-control form-control-sm"
-                style={{ marginBottom: "10px" }}
-                required
-              />
-            </div>
-
-            <Button
-              variant="primary"
-              style={{ backgroundColor: "#a8c090", border: "none" }}
-              type="submit"
-            >
-              Update Post
-            </Button>
-          </form>
-        </Modal.Body>
+      <Modal
+        show={loginUpdateAlertModal}
+        onHide={() => setLoginUpdateAlertModal(false)}
+        style={{ marginTop: "25vh" }}
+      >
+        <Modal.Header closeButton></Modal.Header>
+        <Modal.Body>You must be logged in to update a post.</Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowPostModal(false)}>
-            Cancel
+          <Button
+            variant="primary"
+            onClick={() => navigate("/login")}
+            style={{ backgroundColor: "#a8c090", border: "none" }}
+          >
+            Log In
           </Button>
         </Modal.Footer>
       </Modal>
-      <CommentDropdown comments={comments} />
-    </Card>
+      <Modal
+        show={loginDeleteAlertModal}
+        onHide={() => setLoginDeleteAlertModal(false)}
+        style={{ marginTop: "25vh" }}
+      >
+        <Modal.Header closeButton></Modal.Header>
+        <Modal.Body>You must be logged in to delete a post.</Modal.Body>
+        <Modal.Footer>
+          <Button
+            variant="primary"
+            onClick={() => navigate("/login")}
+            style={{ backgroundColor: "#a8c090", border: "none" }}
+          >
+            Log In
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </div>
   );
 };
 

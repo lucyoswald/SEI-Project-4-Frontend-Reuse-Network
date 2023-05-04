@@ -4,8 +4,7 @@ import axios from "axios";
 import { API_URL } from "../consts";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
-import signup_background_video from "../assets/pexels-charlotte-may-5824187-2160x3840-24fps.mp4";
-import signup_background_image from "../assets/pexels-ksenia-chernaya-5716775.jpg";
+import signup_background_image from "../assets/pexels-francesco-ungaro-8345717.jpg";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
