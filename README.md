@@ -1,5 +1,5 @@
 
-## SEI Project 4 - MERN Stack - The Reuse Network 
+## SEI Project 4 The Reuse Network 
 
 ##### Link to Backend 
 
@@ -20,7 +20,29 @@ For project 4, we were asked to build a full stack app with a Python backend and
 
 
 ## 🛠 Technologies Used
-HTML | CSS | JavaScript | React.js | SCSS | Express | Python | Django | Postman | Bootstrap | Excalidraw 
+
+Backend
+* Python
+* Django Rest Framework
+* JSON Web Token (JWT)
+
+Frontend
+* React
+* JavaScript
+* React-Router-Dom
+* Axios
+* Bootstrap
+* CSS
+* SASS
+
+Development and Deployment
+* Excalidraw
+* Postman
+* Git 
+* GitHub
+* Netlify
+* Heroku
+
 
 ## Timeframe:
 2 weeks | Solo project
