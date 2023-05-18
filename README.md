@@ -1,5 +1,4 @@
-
-## SEI Project 4 The Reuse Network 
+## SEI Project 4 The Reuse Network
 
 #### Link to the backend [here](https://github.com/lucyoswald/SEI-Project-4-Backend-Reuse-Network).
 
@@ -7,70 +6,81 @@ For project 4, we were asked to build a full stack app with a Python backend and
 
 #### View the live site [here](https://the-reuse-network.netlify.app/).
 
+## Application Visuals
 
+<p align="center">
+<img src="./readme_assets/homepage.gif" width="49%"/>
+<img src="./readme_assets/create_post.gif" width="49%"/>
+<img src="./readme_assets/update_delete_post.gif" width="49%"/>
+<img src="./readme_assets/Login.png" width="49%"/>
+</p>
+<p align="center">
+<img src="./readme_assets/login_signup.gif" width="49%"/>
+<img src="./readme_assets/comments.gif" width="49%"/>
 
-## Project Brief: 
+</p>
 
-* Build a full-stack application by making your own backend and your own front-end
-* Use a Python Django API - using Django REST Framework to serve your data from a Postgres database
-* Consume your API with a separate front-end built with React
-* Be a complete product which most likely means multiple relationships and CRUD functionality for at least a couple of models
-* Implement thoughtful user stories/wireframes that are significant enough to help you know which features are core MVP and which you can cut
-* Have a visually impressive design to kick your portfolio up a notch and have something to wow future clients & employers
-* Be deployed online so it's publicly accessible
-* React Hooks is optional for this project
+## Project Brief:
 
+- Build a full-stack application by making your own backend and your own front-end
+- Use a Python Django API - using Django REST Framework to serve your data from a Postgres database
+- Consume your API with a separate front-end built with React
+- Be a complete product which most likely means multiple relationships and CRUD functionality for at least a couple of models
+- Implement thoughtful user stories/wireframes that are significant enough to help you know which features are core MVP and which you can cut
+- Have a visually impressive design to kick your portfolio up a notch and have something to wow future clients & employers
+- Be deployed online so it's publicly accessible
+- React Hooks is optional for this project
 
 ## 🛠 Technologies Used
 
 Backend
-* Python
-* Django Rest Framework
-* JSON Web Token (JWT)
+
+- Python
+- Django Rest Framework
+- JSON Web Token (JWT)
 
 Frontend
-* React
-* JavaScript
-* React-Router-Dom
-* Axios
-* Bootstrap
-* CSS
-* SASS
+
+- React
+- JavaScript
+- React-Router-Dom
+- Axios
+- Bootstrap
+- CSS
+- SASS
 
 Development and Deployment
-* Excalidraw
-* Postman
-* Git 
-* GitHub
-* Netlify
-* Heroku
 
+- Excalidraw
+- Postman
+- Git
+- GitHub
+- Netlify
+- Heroku
 
 ## Timeframe:
-2 weeks | Solo project
 
+2 weeks | Solo project
 
 ## Planning
 
-### Excalidraw 
+### Excalidraw
 
-I started by mapping out each page and the components, working out how the pages would work together. I quickly determined the most important elements that were necessary for the initial version of the app (MVP). Then, I made a list of additional goals and nice-to-have features. I knew early on for example that I wanted to try and create modals for my application as it was something I didn’t get to do previously. So I mapped these out clearly and when they would appear via which button clicks. I really enjoy this part of the project, planning is so important but it really helps me start to visualise the app and also allows me to think how the code is going to start to look. 
+I started by mapping out each page and the components, working out how the pages would work together. I quickly determined the most important elements that were necessary for the initial version of the app (MVP). Then, I made a list of additional goals and nice-to-have features. I knew early on for example that I wanted to try and create modals for my application as it was something I didn’t get to do previously. So I mapped these out clearly and when they would appear via which button clicks. I really enjoy this part of the project, planning is so important but it really helps me start to visualise the app and also allows me to think how the code is going to start to look.
 
 <img width=110% src="https://github.com/lucyoswald/SEI-Project-4-Frontend-Reuse-Network/assets/116687424/fbd6f019-157c-41d8-9574-5b8638acc9e1">
-
 
 ## Build/Code Process
 
 ### Backend:
 
-This was my first time creating an application with a Python backend using Django, it was definitely a challenge but I really enjoyed it. I found once I got into the planning I was able to start thinking about what models I would need and how it would be structured. I have three models total, my posts model, comments model and then my jwt model. 
+This was my first time creating an application with a Python backend using Django, it was definitely a challenge but I really enjoyed it. I found once I got into the planning I was able to start thinking about what models I would need and how it would be structured. I have three models total, my posts model, comments model and then my jwt model.
 
+### Post model
 
-### Post model 
-My post model lays out exactly what I wanted to display on each post: the image of the item, item name, the description, contact details for the poster and the location. The ‘status’ wasn’t a field necessarily on the card, it was so that when the user updates the card a little tab that is auto set to available can switch to pending, of course in order for this to update on the front end and save I had to make it a field in my backend. 
+My post model lays out exactly what I wanted to display on each post: the image of the item, item name, the description, contact details for the poster and the location. The ‘status’ wasn’t a field necessarily on the card, it was so that when the user updates the card a little tab that is auto set to available can switch to pending, of course in order for this to update on the front end and save I had to make it a field in my backend.
 
-
-``` py 
+```py
 from django.db import models
 
 class Post(models.Model):
@@ -88,15 +98,16 @@ class Post(models.Model):
     )
 
 
-    def __str__(self):  
+    def __str__(self):
          return f"{self.item} - {self.description}"
-         
-  ```
-###  Update, delete posts in the backend
+
+```
+
+### Update, delete posts in the backend
+
 This is the PostDetailView, which manages the functionalities for updating and deleting a post. I was particularly satisfied with the implementation of permission checks in these functions. It verifies whether the user attempting to update or delete the post is the actual owner, ensuring that only the owner can successfully perform these actions. Additionally, I successfully implemented an override for the admin, allowing them to update or delete posts regardless of their ownership status, achieved by incorporating the condition 'and not request.user.is_staff'.
 
-
-``` py
+```py
        class PostDetailView(APIView):
     permission_classes = (IsAuthenticatedOrReadOnly, )
     def get_post(self, pk):
@@ -110,7 +121,7 @@ This is the PostDetailView, which manages the functionalities for updating and d
            if request.user != post_to_update.owner and not request.user.is_staff:
                raise PermissionDenied()
         updated_post = PostSerializer(post_to_update, data=request.data)
-        try: 
+        try:
             updated_post.is_valid()
             updated_post.save()
             return Response(updated_post.data, status=status.HTTP_202_ACCEPTED)
@@ -118,47 +129,47 @@ This is the PostDetailView, which manages the functionalities for updating and d
             return Response({"detail": str(e)}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
         except:
             return Response({"detail": "Unprocessible Entity"}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
-        
+
     def delete(self,  request , pk):
         post_to_delete = self.get_post(pk=pk)
         if request.user != post_to_delete.owner and not request.user.is_staff:
-               raise PermissionDenied()     
+               raise PermissionDenied()
         post_to_delete.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-         
-  ```
 
-### Comments 
+```
+
+### Comments
+
 My comments backend model was fairly straight forward, I just wanted the text, created_at and then of course the post that the comment was connected to.
 
-
-``` py
+```py
 from django.db import models
 class Comment(models.Model):
     text = models.TextField(max_length=300)
     created_at = models.DateTimeField(auto_now_add=True)
     post = models.ForeignKey(
-        "posts.Post",  
-        related_name="comments",  
+        "posts.Post",
+        related_name="comments",
         on_delete=models.CASCADE
     )
     owner = models.ForeignKey(
         "jwt_auth.User",
         on_delete=models.CASCADE
-    ) def __str__(self):  
+    ) def __str__(self):
          return f"{self.text} - {self.post}"
 
-  ```
-  
+```
 
 ### Frontend
-The website has a home page where the user can search for posts via item name or location. An all posts page that displays all the posts in the database. Users can click on a specific post to update or delete it, depending on their permissions and whether they are the original creator of the post. Additionally, users have the ability to leave comments on any given post and delete their own comments. Anyone can create a post as long as they’re logged in. I have a sign up and login page. Throughout the project, I have extensively utilized modals you can see this present for all my error pop ups and the CRUD functionality. 
 
+The website has a home page where the user can search for posts via item name or location. An all posts page that displays all the posts in the database. Users can click on a specific post to update or delete it, depending on their permissions and whether they are the original creator of the post. Additionally, users have the ability to leave comments on any given post and delete their own comments. Anyone can create a post as long as they’re logged in. I have a sign up and login page. Throughout the project, I have extensively utilized modals you can see this present for all my error pop ups and the CRUD functionality.
 
 ### Homepage
 
 ### Search Function
+
 I have implemented a search functionality to allow users to find specific posts by item name or location. The main component representing the homepage is called Home. At the center of the page, there is a search input field where users can enter their search query. As they type, the search query is stored in the search state variable using the useState hook.
 
 To initiate the search, users can click on the search button, which triggers the onSubmit function. This function handles the search submission process. First, it sets the loading state to indicate that the search is in progress. Then, it calls the fetchData function.
@@ -167,7 +178,7 @@ The fetchData function is responsible for making an API call to retrieve post da
 
 The filtered results are then stored in the searchResults state variable. If no results are found, a flag called unsuccessfulSearchSubmitted is set to true, which triggers the display of an error modal dialog. The modal informs the user that their search did not yield any results and provides a way to close the dialog.
 
-``` js
+```js
 
 const Home = () => {
   const navigate = useNavigate();
@@ -213,16 +224,16 @@ const Home = () => {
   };
 
 ```
-  
-``` js
+
+```js
  //cut to the return
- 
+
        <section className="postcards_onsearch">
               {searchResults.map((post) => (
                 <PostCard key={post.id} post={post} />
               ))}{" "}
             </section>
-            
+
         <Modal
         show={unsuccessfulSearchSubmitted}
         onHide={() => setUnsuccessfulSearchSubmitted(false)}
@@ -242,12 +253,13 @@ const Home = () => {
           </Button>
         </Modal.Footer>
       </Modal>
- ```
+```
+
 ### Bootstrap Loading Visual
 
-While the search is in progress, a loading visual component is displayed to provide feedback to the user. I integrated the loading visual via Bootstrap into my project, making minor CSS adjustments to match my colour scheme. It is used throughout the project to provide visual feedback during data fetching and search operations, ensuring a consistent user experience. Once the search results are available, they are rendered on the page using the PostCard component. Each post is displayed as a card, allowing users to view relevant information. 
+While the search is in progress, a loading visual component is displayed to provide feedback to the user. I integrated the loading visual via Bootstrap into my project, making minor CSS adjustments to match my colour scheme. It is used throughout the project to provide visual feedback during data fetching and search operations, ensuring a consistent user experience. Once the search results are available, they are rendered on the page using the PostCard component. Each post is displayed as a card, allowing users to view relevant information.
 
-``` js
+```js
 <div className={!activeColor ? "home_search" : "grey_background"}>
         {isLoading ? (
           <div className="loading">
@@ -266,39 +278,40 @@ While the search is in progress, a loading visual component is displayed to prov
                 className="home_background_image"
               />
             )}
-  ```
+```
 
 ### Navigate
-Additionally, below the search section, there are sign-up and login buttons available; these both useNavigate() to navigate to their respective pages. However, if a search has been submitted, these buttons are hidden to avoid distracting the user. I also added a video for the background of this page. However, when users initiate a search by entering a query, the video transitions to a grey background. This change in background ensures that the posts, displayed as cards on the page, remain visually distinct and don't overwhelm the user. 
 
-``` js
+Additionally, below the search section, there are sign-up and login buttons available; these both useNavigate() to navigate to their respective pages. However, if a search has been submitted, these buttons are hidden to avoid distracting the user. I also added a video for the background of this page. However, when users initiate a search by entering a query, the video transitions to a grey background. This change in background ensures that the posts, displayed as cards on the page, remain visually distinct and don't overwhelm the user.
+
+```js
 <section className="signup_login_buttons">
-              {searchSubmitted ? null : (
-                <>
-                  <button
-                    type="button"
-                    class="btn btn-primary"
-                    onClick={() => navigate("/signup")}
-                  >
-                    Sign Up
-                  </button>
-                  <button
-                    type="button"
-                    class="btn btn-primary"
-                    onClick={() => navigate("/login")}
-                  >
-                    Log In
-                  </button>
-                </>
-              )}
-            </section>
-  ```
- 
+  {searchSubmitted ? null : (
+    <>
+      <button
+        type="button"
+        class="btn btn-primary"
+        onClick={() => navigate("/signup")}
+      >
+        Sign Up
+      </button>
+      <button
+        type="button"
+        class="btn btn-primary"
+        onClick={() => navigate("/login")}
+      >
+        Log In
+      </button>
+    </>
+  )}
+</section>
+```
+
 ### PostCard component
-The postcard component contains the card itself along with all the functionality available on the card. This includes updating the post, deleting the post, adding and deleting comments, and all of the not logged in error handlers. 
 
+The postcard component contains the card itself along with all the functionality available on the card. This includes updating the post, deleting the post, adding and deleting comments, and all of the not logged in error handlers.
 
-### Icons & Overlays 
+### Icons & Overlays
 
 To enhance the user experience, I integrated custom icons into the PostCard design. These icons are displayed for various actions, such as updating a post, deleting a post, commenting on a post, and deleting a comment. The inclusion of these icons serves as visual cues, providing users with clear indications of available actions.
 
@@ -306,7 +319,7 @@ To further enhance usability, I implemented tooltip overlays for each icon. Thes
 
 These carefully designed visual elements not only contribute to the overall aesthetics of the application but also play a vital role in improving its usability. Users can quickly identify and engage with the relevant icons, enabling them to perform actions such as updating post details with ease. Example of an overlay and icon implemented below.
 
-``` js
+```js
             <OverlayTrigger
               placement="top"
               overlay={
@@ -328,10 +341,10 @@ These carefully designed visual elements not only contribute to the overall aest
         </Card.Body>
 ```
 
-### Updating a Post and Changing Status 
+### Updating a Post and Changing Status
 
-The edit icon, represented by a pen, serves as a clickable element for updating a post. 
-When the edit icon is clicked, a modal called the "Update Post" modal appears on the screen. This modal presents a form with pre-filled input fields that contain the current values of the post. Users can modify these values as desired. 
+The edit icon, represented by a pen, serves as a clickable element for updating a post.
+When the edit icon is clicked, a modal called the "Update Post" modal appears on the screen. This modal presents a form with pre-filled input fields that contain the current values of the post. Users can modify these values as desired.
 
 Within the PostCard component, there is a function called onSubmit that handles the updating of a post, including the optional ability to change the status. This function is triggered when the user submits the update post form.
 
@@ -345,10 +358,9 @@ Upon successful submission of the PATCH request, the response data is captured i
 
 The appearance of the post card is affected by the status field. Initially, when the status is "Available", a green "Available" tab is displayed on the side of the card. However, if the user updated the status to a different value, such as "Pending", the tab color changes to an almond/amber shade, and the text on the tab changes accordingly. This visual change helps users quickly identify the availability or pending status of the item being shared.
 
-This functionality allows users to update the details of a post, and if desired, change the status of the post to provide additional information about its availability or pending status. However, updating the status is entirely optional, and the post can be updated without modifying the status field as it is already preset to ‘Available’. See code below, to see the modal revert to my full code. 
+This functionality allows users to update the details of a post, and if desired, change the status of the post to provide additional information about its availability or pending status. However, updating the status is entirely optional, and the post can be updated without modifying the status field as it is already preset to ‘Available’. See code below, to see the modal revert to my full code.
 
-
-``` js
+```js
   const [patchFormData, setPatchFormData] = useState({
     image: post.image,
     item: post.item,
@@ -415,49 +427,46 @@ If the deletion request is successful, the post is removed from the application,
 
 By implementing the delete post functionality, I aimed to empower users to have control over their own posts. This feature allows users to easily remove their posts when needed, providing a seamless and efficient experience within the application.
 See my code below, including the delete modal.
-``` js
 
+```js
 const deletePost = async (e) => {
-    e.preventDefault();
-    setShowDeleteModal(true);
-    try {
-      const id = post.id;
-      const token = localStorage.getItem("token");
-      const deletedPost = await axios.delete(`${API_URL}/posts/${id}/`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      location.reload();
-    } catch (err) {
-      console.log("this isn't working");
-    }
-  };
+  e.preventDefault();
+  setShowDeleteModal(true);
+  try {
+    const id = post.id;
+    const token = localStorage.getItem("token");
+    const deletedPost = await axios.delete(`${API_URL}/posts/${id}/`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    location.reload();
+  } catch (err) {
+    console.log("this isn't working");
+  }
+};
 
- <Modal
-          show={showDeleteModal}
-          onHide={() => setShowDeleteModal(false)}
-          style={{ marginTop: "25vh" }}
-        >
-          <Modal.Header closeButton>
-            <Modal.Title>Delete Post</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>Are you sure you want to delete this post?</Modal.Body>
-          <Modal.Footer>
-            <Button
-              variant="secondary"
-              onClick={() => setShowDeleteModal(false)}
-            >
-              Cancel
-            </Button>
-            <Button variant="danger" onClick={deletePost}>
-              Delete
-            </Button>
-          </Modal.Footer>
-        </Modal>    
+<Modal
+  show={showDeleteModal}
+  onHide={() => setShowDeleteModal(false)}
+  style={{ marginTop: "25vh" }}
+>
+  <Modal.Header closeButton>
+    <Modal.Title>Delete Post</Modal.Title>
+  </Modal.Header>
+  <Modal.Body>Are you sure you want to delete this post?</Modal.Body>
+  <Modal.Footer>
+    <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
+      Cancel
+    </Button>
+    <Button variant="danger" onClick={deletePost}>
+      Delete
+    </Button>
+  </Modal.Footer>
+</Modal>;
 ```
 
-### Comments 
+### Comments
 
 Within the PostCard component, users have the ability to leave comments on a post. This feature allows users to engage in discussions and provide feedback or additional information related to the post.
 
@@ -473,50 +482,50 @@ If the comment creation request is successful, the newly created comment is adde
 
 In case of any errors during the comment creation process, appropriate error handling is implemented to handle exceptions and provide feedback to the user.
 
-By incorporating the ability to create comments, I aimed to foster engagement and interaction among users within the application. This feature enables users to actively participate in discussions and share their thoughts on specific posts, promoting a dynamic and collaborative environment. Refer to my snippet below, and again refer to my code for use of the modal. 
+By incorporating the ability to create comments, I aimed to foster engagement and interaction among users within the application. This feature enables users to actively participate in discussions and share their thoughts on specific posts, promoting a dynamic and collaborative environment. Refer to my snippet below, and again refer to my code for use of the modal.
 
-``` js
- const commentData = {
-    text: "",
-    post: post.id,
-  };
+```js
+const commentData = {
+  text: "",
+  post: post.id,
+};
 
-  const [commentFormData, setCommentFormData] = useState(commentData);
-  
-  const onCommentSubmit = async (e) => {
-    e.preventDefault();
-    console.log("its working");
+const [commentFormData, setCommentFormData] = useState(commentData);
 
-    try {
-      const token = localStorage.getItem("token");
-      const createComment = await axios.post(
-        `${API_URL}/comments/`,
-        commentFormData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      console.log(createComment);
-      setComments((prevComments) => [...prevComments, createComment.data]);
-      console.log(commentFormData);
-      setShowCommentModal(false);
-      setCommentFormData(commentData);
-      location.reload();
-    } catch (err) {
-      console.log("This isn't working");
-      console.log(err);
-    }
-  };
-  const onCommentChange = (e) => {
-    setCommentFormData({ ...commentFormData, [e.target.name]: e.target.value });
+const onCommentSubmit = async (e) => {
+  e.preventDefault();
+  console.log("its working");
+
+  try {
+    const token = localStorage.getItem("token");
+    const createComment = await axios.post(
+      `${API_URL}/comments/`,
+      commentFormData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    console.log(createComment);
+    setComments((prevComments) => [...prevComments, createComment.data]);
     console.log(commentFormData);
-  };
+    setShowCommentModal(false);
+    setCommentFormData(commentData);
+    location.reload();
+  } catch (err) {
+    console.log("This isn't working");
+    console.log(err);
+  }
+};
+const onCommentChange = (e) => {
+  setCommentFormData({ ...commentFormData, [e.target.name]: e.target.value });
+  console.log(commentFormData);
+};
 ```
 
-### CommentDropDown Component 
- 
+### CommentDropDown Component
+
 In addition to the comment creation functionality, I implemented a separate component called CommentDropdown to display the existing comments associated with a post. This component provides users with visibility into the ongoing discussions and contributions on a specific post.
 
 The CommentDropdown component takes the comments prop, which represents the list of comments for the post. It utilizes the React Bootstrap library to create a responsive and visually appealing modal for displaying the comments.
@@ -535,7 +544,7 @@ If the deletion request is successful, the comment is removed from the list of c
 
 Finally, the comment modal includes a "Close" button, allowing users to dismiss the modal and return to the post view.
 
-``` js
+```js
 const CommentModal = ({ comments }) => {
   const [showModal, setShowModal] = useState(false);
 
@@ -645,7 +654,7 @@ const CommentModal = ({ comments }) => {
 export default CommentModal;
 ```
 
-### Error handlers on the PostCard component 
+### Error handlers on the PostCard component
 
 commentAlertModal: This modal is displayed when a user who is not logged in attempts to leave a comment on a post. It prompts the user to log in to leave a comment. The state commentAlertModal is used to control the visibility of this modal.
 loginUpdateAlertModal: When a user who is not logged in attempts to update a post, this modal is shown. It informs the user that they need to be logged in to update a post. The state loginUpdateAlertModal controls the visibility of this modal.
@@ -658,53 +667,53 @@ showDeleteAlertModal: When a user who is not the creator of a post attempts to d
 
 These error handlers are triggered in different scenarios to provide appropriate feedback and guidance to the user. They ensure that only logged-in users can perform certain actions such as leaving comments, updating posts, or deleting posts. Additionally, they prevent unauthorized users from modifying posts created by other users.
 
-By implementing these error handlers and modals, I aimed to enhance the security and integrity of the application while providing clear instructions and notifications to users in different scenarios. 
+By implementing these error handlers and modals, I aimed to enhance the security and integrity of the application while providing clear instructions and notifications to users in different scenarios.
 
-``` js
- const handleUpdateModal = (value) => {
-    if (!userId) {
-      // Show not logged in update modal
-      setLoginUpdateAlertModal(true);
-    } else if (userId === post.owner.id) {
-      // Show update modal
-      setShowPostModal(value);
-    } else {
-      // Show alert modal for not owner
-      setShowAlertModal(true);
-    }
-  };
+```js
+const handleUpdateModal = (value) => {
+  if (!userId) {
+    // Show not logged in update modal
+    setLoginUpdateAlertModal(true);
+  } else if (userId === post.owner.id) {
+    // Show update modal
+    setShowPostModal(value);
+  } else {
+    // Show alert modal for not owner
+    setShowAlertModal(true);
+  }
+};
 
-  const handleShowDeleteModal = (value) => {
-    if (!userId) {
-      // Show not logged in delete modal
-      setLoginDeleteAlertModal(true);
-    } else if (userId === post.owner.id) {
-      // Show delete modal
-      setShowDeleteModal(value);
-    } else {
-      // Show alert modal for not owner
-      setShowDeleteAlertModal(true);
-    }
-  };
-  
-    const onCommentClick = () => {
-    if (!userId) {
-      setCommentAlertModal(true);
-      return;
-    }
-    setShowCommentModal(true);
-  };
+const handleShowDeleteModal = (value) => {
+  if (!userId) {
+    // Show not logged in delete modal
+    setLoginDeleteAlertModal(true);
+  } else if (userId === post.owner.id) {
+    // Show delete modal
+    setShowDeleteModal(value);
+  } else {
+    // Show alert modal for not owner
+    setShowDeleteAlertModal(true);
+  }
+};
+
+const onCommentClick = () => {
+  if (!userId) {
+    setCommentAlertModal(true);
+    return;
+  }
+  setShowCommentModal(true);
+};
 ```
 
-### Header component 
+### Header component
 
-I have implemented the header component for the application. The header is built using the Navbar component from React Bootstrap. I opted for this as it is mobile responsive and collapses with a clickable tab option when the screen gets smaller. 
+I have implemented the header component for the application. The header is built using the Navbar component from React Bootstrap. I opted for this as it is mobile responsive and collapses with a clickable tab option when the screen gets smaller.
 
+### Logged In / Logged Out
 
-### Logged In / Logged Out 
 The authentication status is determined by checking the presence of a token in the local storage. If a token is present, the user is considered logged in, and the "Log Out" link is displayed. Clicking on the "Log Out" link triggers the handleLogout function, which removes the token from the local storage, updates the authentication status, and navigates the user back to the home page ("/").
 
-``` js
+```js
 const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem("token"));
   const navigate = useNavigate();
@@ -724,8 +733,9 @@ const Header = () => {
       : { title: "Login", slug: "/login" },
   ];
 ```
-  
-### Posts component: 
+
+### Posts component:
+
 In this code snippet, I have implemented the Posts component, which is responsible for displaying a list of posts and providing the functionality to create new posts.
 
 The Posts component starts by defining multiple state variables using the useState hook. These variables include posts to store the array of posts, showModal to control the visibility of the create post modal, isLoading to indicate if the data is being loaded, isLoggedIn to track the user's login status, and loggedInPostModal to control the visibility of the modal for logged-in users.
@@ -736,11 +746,11 @@ The create post functionality is implemented through a modal. I incorporated an 
 
 Clicking on the icon triggers the onClick function , which checks if the user is logged in by checking the presence of a token in the local storage. If the user is not logged in, the loggedInPostModal is displayed, prompting the user to log in. Otherwise, the showModal state variable is set to true, and the modal for creating a new post is shown. The form data for the new post is stored in the formData state variable, and changes in the form inputs are handled by the onChange function.
 
-Submitting the form triggers the onSubmit function, which sends a POST request to the API endpoint to create a new post. The request includes the form data and the authorization token retrieved from the local storage. If the request is successful, the newly created post is added to the posts state variable, the showModal state variable is set to false to close the modal, and the formData state variable is reset to its initial values. 
+Submitting the form triggers the onSubmit function, which sends a POST request to the API endpoint to create a new post. The request includes the form data and the authorization token retrieved from the local storage. If the request is successful, the newly created post is added to the posts state variable, the showModal state variable is set to false to close the modal, and the formData state variable is reset to its initial values.
 
-The list of posts is then rendered using the map function on the posts array. Each post is rendered as a PostCard component. Additionally, the loading visual component is displayed when the data is being fetched, and a modal to prompt the user to log in when attempting to create a post without being logged in. See the code below - to review the full solution refer to the Posts page in my files. 
+The list of posts is then rendered using the map function on the posts array. Each post is rendered as a PostCard component. Additionally, the loading visual component is displayed when the data is being fetched, and a modal to prompt the user to log in when attempting to create a post without being logged in. See the code below - to review the full solution refer to the Posts page in my files.
 
-``` js
+```js
 const Posts = () => {
   const [posts, setPosts] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -816,22 +826,24 @@ const Posts = () => {
 ### Finished Product: add in video of the finished product
 
 ## Wins & Challenges
-### Wins:
-* Despite the limited time we had to learn Python, I consider this project a success. Towards the end, I gained a better understanding of the backend concepts, and things started to fall into place more smoothly, which was satisfying.
-* One of my biggest accomplishments was being able to bring my vision to life. I set out with a clear goal in mind, and I'm proud to say that the product I created closely aligns with that vision. It's fulfilling to see the project turn out exactly as intended.
-* Overall, I'm highly satisfied with the overall appearance of the application. It is fully responsive and optimised for mobile devices. Incorporating mobile responsiveness was crucial, and I'm delighted that I was able to achieve this important aspect.
 
+### Wins:
+
+- Despite the limited time we had to learn Python, I consider this project a success. Towards the end, I gained a better understanding of the backend concepts, and things started to fall into place more smoothly, which was satisfying.
+- One of my biggest accomplishments was being able to bring my vision to life. I set out with a clear goal in mind, and I'm proud to say that the product I created closely aligns with that vision. It's fulfilling to see the project turn out exactly as intended.
+- Overall, I'm highly satisfied with the overall appearance of the application. It is fully responsive and optimised for mobile devices. Incorporating mobile responsiveness was crucial, and I'm delighted that I was able to achieve this important aspect.
 
 ### Challenges:
-* Undoubtedly, this project presented several challenges. Despite gaining more confidence in Python, I still found it to be a relatively unfamiliar territory, and determining the necessary backend components for the project's success proved to be a challenging starting point. 
-* A specific challenge I encountered was implementing modals, which I utilized for the first time throughout the project. Integrating modals, especially with Bootstrap, proved to be an arduous task. While Bootstrap has its advantages, I found it less flexible and encountered difficulties working with its predefined styles and functions. It often became a source of frustration and required additional effort to achieve the desired outcome.
+
+- Undoubtedly, this project presented several challenges. Despite gaining more confidence in Python, I still found it to be a relatively unfamiliar territory, and determining the necessary backend components for the project's success proved to be a challenging starting point.
+- A specific challenge I encountered was implementing modals, which I utilized for the first time throughout the project. Integrating modals, especially with Bootstrap, proved to be an arduous task. While Bootstrap has its advantages, I found it less flexible and encountered difficulties working with its predefined styles and functions. It often became a source of frustration and required additional effort to achieve the desired outcome.
 
 ### Key Learnings
-One key learning was the importance of focusing on the MVP and avoiding the temptation to incorporate every possible feature. By prioritizing the essential functionalities, I was able to maintain a clear direction and deliver a functional product.
-Another significant learning experience was the need to approach the Python backend slowly, taking the time to process and analyze the backend requirements before rushing forward. 
 
+One key learning was the importance of focusing on the MVP and avoiding the temptation to incorporate every possible feature. By prioritizing the essential functionalities, I was able to maintain a clear direction and deliver a functional product.
+Another significant learning experience was the need to approach the Python backend slowly, taking the time to process and analyze the backend requirements before rushing forward.
 
 ### Future Improvements
-* An area for future improvement is my code organization and legibility. I faced challenges with code destructuring, specifically in the modals used in the PostCard and Posts components. Due to time constraints, I was unable to implement proper destructuring. I would like to invest more time into this to enhance the readability of my codebase.
-* Additionally, I had a vision for a "profiles" page that would allow users to create profiles and offer their services to the community, similar to the functionality of the posts page.
 
+- An area for future improvement is my code organization and legibility. I faced challenges with code destructuring, specifically in the modals used in the PostCard and Posts components. Due to time constraints, I was unable to implement proper destructuring. I would like to invest more time into this to enhance the readability of my codebase.
+- Additionally, I had a vision for a "profiles" page that would allow users to create profiles and offer their services to the community, similar to the functionality of the posts page.
