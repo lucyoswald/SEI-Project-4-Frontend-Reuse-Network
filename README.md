@@ -19,7 +19,7 @@ Sign up and create new account or try this demo user:
 <img src="./readme_assets/homepage.gif" width="49%"/>
 <img src="./readme_assets/create_post.gif" width="49%"/>
 <img src="./readme_assets/update_delete_post.gif" width="49%"/>
-<img src="./readme_assets/Login.png" width="49%" height="317px"/>
+<img src="./readme_assets/Login.png" width="49%"/>
 <img src="./readme_assets/login_signup.gif" width="49%"/>
 <img src="./readme_assets/comments.gif" width="49%"/>
 
