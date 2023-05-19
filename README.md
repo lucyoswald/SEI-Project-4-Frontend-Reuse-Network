@@ -28,9 +28,9 @@ Sign up and create new account or try this demo user:
 ## Responsive Design
 
 <p align="center">
-<img src="./readme_assets/homemobbb.gif" width="24.6%"/>
-<img src="./readme_assets/login_signup_mob.gif" width="25%"/>
-<img src="./readme_assets/_posts_mobile.gif" width="25%"/>
+<img src="./readme_assets/homemobbb.gif" width="29.6%"/>
+<img src="./readme_assets/login_signup_mob.gif" width="30%"/>
+<img src="./readme_assets/_posts_mobile.gif" width="30%"/>
 </p>
 
 ## Project Brief:
