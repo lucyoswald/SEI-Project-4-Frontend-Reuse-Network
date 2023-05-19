@@ -50,6 +50,11 @@
     margin: 5px;
   }
 }
+@media (max-width: 600px) {
+  .sl_form {
+    width: 300px;
+  }
+}
 
 .error {
   font-size: 11px;

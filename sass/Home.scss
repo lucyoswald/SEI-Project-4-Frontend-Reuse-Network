@@ -47,7 +47,7 @@
   flex-direction: row;
   gap: 30px;
   flex-wrap: wrap;
-  margin: 90px;
+  margin: 50px;
   margin-top: 60px;
 }
 
@@ -58,4 +58,13 @@
   background-position: cover;
   width: 100vw;
   height: 200vh;
+}
+
+.form-control {
+  width: 400px !important;
+}
+@media (max-width: 450px) {
+  .form-control {
+    width: 250px !important;
+  }
 }

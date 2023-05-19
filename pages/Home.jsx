@@ -93,7 +93,7 @@ const Home = () => {
             >
               <div class="form-outline">
                 <input
-                  style={{ width: "400px", fontSize: "14px" }}
+                  style={{ fontSize: "14px" }}
                   id="form1"
                   class="form-control"
                   placeholder="Search by item or location..."

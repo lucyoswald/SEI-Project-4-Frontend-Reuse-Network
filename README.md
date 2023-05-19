@@ -1,10 +1,17 @@
 ## SEI Project 4 The Reuse Network
 
-#### Link to the backend [here](https://github.com/lucyoswald/SEI-Project-4-Backend-Reuse-Network).
-
 For project 4, we were asked to build a full stack app with a Python backend and React frontend. I chose to develop an application called The Reuse Network that enables users to upload and browse posts about free furniture within their local area. Users have the option to sign up and log in, search for posts based on specific items or locations, explore all available posts, as well as create, modify, and remove their own posts. Additionally, users can engage in discussions by adding comments.
 
-#### View the live site [here](https://the-reuse-network.netlify.app/).
+This repo contains the code for the front-end client only. You can find the code for the back-end API [here](https://github.com/lucyoswald/SEI-Project-4-Backend-Reuse-Network).
+
+### Deployed Application
+
+View the deployed site [here](https://the-reuse-network.netlify.app/).
+
+Sign up and create new account or try this demo user:
+
+- Username: lily@gmail.com
+- Password: Straw1798!
 
 ## Application Visuals
 
@@ -12,12 +19,20 @@ For project 4, we were asked to build a full stack app with a Python backend and
 <img src="./readme_assets/homepage.gif" width="49%"/>
 <img src="./readme_assets/create_post.gif" width="49%"/>
 <img src="./readme_assets/update_delete_post.gif" width="49%"/>
-<img src="./readme_assets/Login.png" width="49%"/>
+<img src="./readme_assets/Login.png" width="49%" height="317px"/>
 </p>
 <p align="center">
 <img src="./readme_assets/login_signup.gif" width="49%"/>
 <img src="./readme_assets/comments.gif" width="49%"/>
 
+</p>
+
+## Responsive Design
+
+<p align="center">
+<img src="./readme_assets/homemobbb.gif" width="24.6%"/>
+<img src="./readme_assets/login_signup_mob.gif" width="25%"/>
+<img src="./readme_assets/_posts_mobile.gif" width="25%"/>
 </p>
 
 ## Project Brief:
