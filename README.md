@@ -6,7 +6,8 @@ This repo contains the code for the front-end client only. You can find the code
 
 ### Deployed Application
 
-View the deployed site [here](https://the-reuse-network.netlify.app/).
+View the deployed site <a href="https://the-reuse-network.netlify.app/" target="_blank">here</a>.
+
 
 Sign up and create new account or try this demo user:
 
